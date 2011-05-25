@@ -1,0 +1,11 @@
+Package: twmap
+Type: Package
+Title: Draw species plots and elevation in Taiwan 
+Version: 1.1
+Date: 2011-05-25
+Author: Lin, Cheng-Tao
+Maintainer: Lin, Cheng-Tao <mutolisp@gmail.com>
+Description: It's lazy-man-drawing Taiwan map and species data program with classified elevation and rivers. 
+License: FreeBSD License
+LazyLoad: yes
+Packaged: 2011-05-25 05:38:10 UTC; psilotum
