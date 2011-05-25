@@ -5,6 +5,7 @@ Version: 1.1
 Date: 2011-05-25
 Author: Lin, Cheng-Tao
 Maintainer: Lin, Cheng-Tao <mutolisp@gmail.com>
+Depends: R (>= 2.10), maptools (>= 0.8), rgdal (>= 0.6)
 Description: It's lazy-man-drawing Taiwan map and species data program with classified elevation and rivers. 
 License: FreeBSD License
 LazyLoad: yes
