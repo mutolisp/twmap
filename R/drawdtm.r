@@ -30,7 +30,9 @@ drawDTMSP <- function(species.data, sp.pch, sp.col, lwd){
     par(xpd=F)
     print("Generating map(s), how about have a cup of coffee and take a rest?")
     # plot shp files
-    plot(c1, col=my.colors[1], border=F)
+    plot(twbound)
+    rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col="#63B8FFAA")
+    plot(c1, add=T, col=my.colors[1], border=F)
     plot(c2, add=T, col=my.colors[2], border=F)
     plot(c3, add=T, col=my.colors[3], border=F)
     plot(c4, add=T, col=my.colors[4], border=F)
