@@ -57,9 +57,9 @@ drawtwmap(species.data, sp.pch, sp.col, lwd, river = T, png = T, file.name)
 }
 \author{
 %%  ~~who you are~~
-     Lin, Cheng-Tao 
-     School of Forestry and Resource Conservation, 
-     National Taiwan University
+Lin, Cheng-Tao
+School of Forestry and Resource Conservation, 
+National Taiwan University
 }
 \note{
 %%  ~~further notes~~
@@ -69,24 +69,16 @@ drawtwmap(species.data, sp.pch, sp.col, lwd, river = T, png = T, file.name)
 
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
+maptools, sp
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (species.data, sp.pch, sp.col, lwd, river = T, png = T, 
-    file.name) 
-{
-    if (png == T) {
-        png(file = file.name, width = 2480, height = 3509, pointsize = 48)
-        drawDTMSP(species.data, sp.pch, sp.col, lwd, river = T)
-        dev.off()
-    }
-    else drawDTMSP(species.data, sp.pch, sp.col, lwd, river = T)
-  }
+# Draw a standard species plot with elevation and water,
+# then export to 'sp_name.png'
+library(twmap)
+data(twsp)
+drawtwmap(sp, lwd=4, sp.pch=16, sp.col="red", png=T, file.name='sp_name.png')
 }
+
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{ ~kwd1 }

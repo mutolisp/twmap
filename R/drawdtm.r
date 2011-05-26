@@ -30,7 +30,9 @@ drawDTMSP <- function(species.data, sp.pch, sp.col, lwd){
     par(xpd=F)
     print("Generating map(s), how about have a cup of coffee and take a rest?")
     # plot shp files
-    plot(c1, col=my.colors[1], border=F)
+    plot(twbound)
+    rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col="#63B8FFAA")
+    plot(c1, add=T, col=my.colors[1], border=F)
     plot(c2, add=T, col=my.colors[2], border=F)
     plot(c3, add=T, col=my.colors[3], border=F)
     plot(c4, add=T, col=my.colors[4], border=F)
@@ -77,4 +79,57 @@ drawDTMSP <- function(species.data, sp.pch, sp.col, lwd){
    
     # plot species data
     plot.xy(xy.coords(species.data), lwd=3, pch=sp.pch, type="p", col=sp.col)
+}
+
+twcoor.trans <- function(coords, src, dst){
+    # projection definition (from Proj.4, coordinate systems see http://spatialreference.org)
+    # Taiwan Datum 1997 Transverse Mercator EPSG: 3826 
+    TWD97TM2 <- "+proj=tmerc +ellps=GRS80 +lon_0=121 +x_0=250000 +k=0.9999 +units=m +no_defs"
+    # Taiwan Datum 1967 Transverse Mercator
+    TWD67TM2 <- "+proj=tmerc +lat_0=0 +lon_0=121 +k=0.9999 +x_0=250000 +y_0=0 +ellps=aust_SA +units=m +towgs84=-752,-358,-179,-0.0000011698,0.0000018398,0.0000009822,0.00002329 +no_defs"
+    # WGS84 Longitude-latitude 
+    WGS84 <- "+proj=latlong +ellps=WGS84 +datum=WGS84 +no_defs"
+
+    library(proj4)
+
+     #ptransform(coords, src.proj=src, dst.proj=dst)/pi*180
+
+     if ( src == 84 ){
+         #src.proj <- "+proj=latlong +ellps=WGS84 +datum=WGS84 +no_defs"
+         src.proj <- WGS84
+         dcoords <- coords/180*pi
+         if ( dst == 97 ){
+            dst.proj <- TWD97TM2 
+         } else if ( dst == 67 ) {
+            dst.proj <- TWD67TM2
+         } else if ( dst == 84 ) {
+            coords
+         } else print("Unsupported coordinate system!")
+         ptransform(dcoords, src.proj, dst.proj)[, 1:2]
+
+     } else if ( src == 97 ) {
+         src.proj <- TWD97TM2
+         if ( dst == 84 ) {
+             dst.proj <- WGS84
+             ptransform(coords, src.proj, dst.proj)/pi*180[, 1:2]
+         } else if ( dst == 67 ){
+             dst.proj <- TWD67TM2
+             print("Under construction!")
+         } else if ( dst == 97 ) {
+             coords
+         } else print("Unsupported coordinate system!")
+
+     } else if ( src == 67 ) {
+         src.proj <- TWD67TM2
+         if ( dst == 84 ) {
+             dst.proj <- WGS84
+             ptransform(coords, src.proj, dst.proj)/pi*180[, 1:2]
+         } else if ( dst == 97 ){
+             dst.proj <- TWD97TM2
+             print("Under construction!")
+         } else if ( dst == 67 ) {
+             coords
+         } else print("Unsupported coordinate system!")
+     }
+     else print("Exception caught! Please report a bug! Thank you")
 }
