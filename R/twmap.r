@@ -200,7 +200,6 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
             beidawu.y <- 3200
         } else print("Unsupported coordinate system!")
 
-    quartz(width=12,height=5)
     plot(elev, pch=".", ylim=o.ylim, xlim=o.xlim, axes=F,
                         ylab=o.ylab, xlab=o.xlab)
     lines(elev)
@@ -227,7 +226,7 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
         # coordinate system selection
         if ( coorsys == 84 ) {
             elev <- cbind(elevprof84[, 2], elevprof84[, 1])
-            o.xlim <- c(0,4200)
+            o.xlim <- c(4200,0)
             o.ylim <- c(21.5, 25.7)
             o.ylab <- "Latitude"
             latdeg <- parse(text=paste(22:25,"*degree~", "N", sep=""))
@@ -243,7 +242,7 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
             beidawu.x <- 3200
         } else if ( coorsys == 97 ) {
             elev <- cbind(elevprof[, 2], elevprof[, 1])
-            o.xlim <- c(0,4200)
+            o.xlim <- c(4200,0)
             o.ylim <- c(2380000,2850000)
             o.ylab <- "TWD97 TM2 Y (meter)"
             latdeg <- c(24:28*100000)
@@ -259,7 +258,6 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
             beidawu.x <- 3200
         } else print("Unsupported coordinate system!")
 
-    quartz(width=5,height=12)
     plot(elev, pch=".", ylim=o.ylim, xlim=o.xlim, axes=F,
                         ylab=o.ylab, xlab=o.xlab)
     lines(elev)
