@@ -106,6 +106,8 @@ twcoor.trans <- function(coords, src, dst){
     # N67 = N97 + 248.6 - A * N97 - B * E97
     # E97 = E67 + 807.8 + A * E67 + B * N67
     # N97 = N67 - 248.6 + A * N67 + B * E67
+    # (error range: within 2 meters
+    # 
     # TO DO: check the precision of this and compare to defined projection
     # in EPSG
 
