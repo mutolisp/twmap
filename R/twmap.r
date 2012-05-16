@@ -1,28 +1,35 @@
 # draw Taiwan map with DTM, river and species distribution data
 
-drawtwmap <- function(species.data, sp.pch, sp.col, lwd, png=T, file.name) {
-    if ( png == T ) {
-        png(file=file.name, width=2480, height=3509, pointsize=48)
-            drawDTMSP(species.data, sp.pch, sp.col, lwd)
-        dev.off()
-    }
-    else 
-        drawDTMSP(species.data, sp.pch, sp.col, lwd)
-}
+#drawtwmap <- function(lwd, png=T, file.name, col) {
+#    if ( png == T ) {
+#        png(file=file.name, width=2480, height=3500, pointsize=48)
+#            drawDTMSP(lwd, col)
+#        dev.off()
+#    }
+#    else 
+#        drawDTMSP(lwd, col)
+#}
 
-drawDTMSP <- function(species.data, sp.pch, sp.col, lwd){
+draw.twmap <- function(theme,lwd, river=T){
     # define colors (terrain.colors series)
-    my.colors <- c("#B0C47CFF", "#F2EEA2FF", "#F2E096FF", "#F2CE85FF", "#D9A982FF", "#C28C7CFF", "#E3B8C1FF", "#FFF2FFFF")
-
+    if ( theme == 1 ) {
+        my.colors <- c("#B0C48CFF","#B0C47CFF", "#F2EEA2FF", "#F2E096FF", 
+                "#F2CE85FF", "#D9A982FF", "#C28C7CFF", "#E3B8C1FF", "#FFF2FFFF","#63B8FFAA")
+    } else if ( theme == 2 ) {
+        my.colors <-c ("#37AA0050","#5FBE0050","#8CD20050","#BEE60050",
+                "#FFDE0050","#FFBE0050","#FF820050","#FF460050","#963C0050","#FFFFFFFF")
+    } else if ( theme == 3 ) {
+        my.colors <- c("#000000FF", "#191919FF", "#323232FF", "#4B4B4BFF",
+                "#646464FF", "#7D7D7DFF", "#969696FF", "#AFAFAFFF", "#C8C8C8FF", "#FFFFFFFF")
+    } else print("Please choose template number: 1 (color) or 2 (gray scale)")
     library(maptools)
     #library(rgdal)
-    library(lattice)
+    #library(lattice)
 
     gridlwd <- lwd
-    river.lwd <- 2
     # load r binary data (processed with readShapePoly(), readShapeLines()
     # in maptools package
-    data(c1,c2,c3,c4,c5,c6,c7,c8,twbound,river)
+    data(c0,c1,c2,c3,c4,c5,c6,c7,c8,twbound,river)
    
     # set parameters for page margin
     par(oma=c(2,2,2,3.5))
@@ -30,18 +37,38 @@ drawDTMSP <- function(species.data, sp.pch, sp.col, lwd){
     par(xpd=F)
     print("Generating map(s), how about have a cup of coffee and take a rest?")
     # plot shp files
-    plot(twbound)
-    rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col="#63B8FFAA")
-    plot(c1, add=T, col=my.colors[1], border=F)
-    plot(c2, add=T, col=my.colors[2], border=F)
-    plot(c3, add=T, col=my.colors[3], border=F)
-    plot(c4, add=T, col=my.colors[4], border=F)
-    plot(c5, add=T, col=my.colors[5], border=F)
-    plot(c6, add=T, col=my.colors[6], border=F)
-    plot(c7, add=T, col=my.colors[7], border=F)
-    plot(c8, add=T, col=my.colors[8], border=F)
-    plot(twbound, add=T, lwd=2)
-    plot(river, col="#63B8FFAA", add=T, lwd=river.lwd)
+    o.ylim <- c(2378200,2832000)
+    #o.ylim <- c(2350000,2800000)
+    # for ocean
+    #rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col=my.colors[10])
+    if ( river == T ) {
+        river.lwd <- 2
+        plot(twbound, ylim=o.ylim)
+        plot(c0, add=T, col=my.colors[1], border=F)
+        plot(c1, add=T, col=my.colors[2], border=F)
+        plot(c2, add=T, col=my.colors[3], border=F)
+        plot(c3, add=T, col=my.colors[4], border=F)
+        plot(c4, add=T, col=my.colors[5], border=F)
+        plot(c5, add=T, col=my.colors[6], border=F)
+        plot(c6, add=T, col=my.colors[7], border=F)
+        plot(c7, add=T, col=my.colors[8], border=F)
+        plot(c8, add=T, col=my.colors[9], border=F)
+        #plot(river, col=my.colors[10], add=T, lwd=river.lwd)
+        plot(twbound, add=T, lwd=2)
+    }
+    else {
+        plot(twbound, ylim=o.ylim)
+        plot(c0, add=T, col=my.colors[1], border=F)
+        plot(c1, add=T, col=my.colors[2], border=F)
+        plot(c2, add=T, col=my.colors[3], border=F)
+        plot(c3, add=T, col=my.colors[4], border=F)
+        plot(c4, add=T, col=my.colors[5], border=F)
+        plot(c5, add=T, col=my.colors[6], border=F)
+        plot(c6, add=T, col=my.colors[7], border=F)
+        plot(c7, add=T, col=my.colors[8], border=F)
+        plot(c8, add=T, col=my.colors[9], border=F)
+        plot(twbound, add=T, lwd=2)
+    }
 
     # plot grid
     grid_lat <- c(2434907.81937665,2544632.70497163,
@@ -61,24 +88,30 @@ drawDTMSP <- function(species.data, sp.pch, sp.col, lwd){
     axis(side=2, grid_lat, latdeg, las=3)
     axis(side=4, grid_lat, latdeg, las=3)
     # draw a box
-    box(lwd=gridlwd)
+    box(lwd=lwd)
     
     # draw elevation legend
-    for ( i in 1:8 ){
-        rect(75000,2400000+15000*i,80000,2415000+15000*i,col=my.colors[i], lwd=0)
+    for ( i in 1:9 ){
+        rect(60000,2355000+15000*i,65000,2370000+15000*i,col=my.colors[i], lwd=0)
     }
-    rect(75000-10,2400000+15000-10,80000+10,2415000+15000*8+10, lwd=3)
+    rect(60000-10,2355000+15000-10,65000+10,2370000+15000*9+10, lwd=3)
     par(xpd=T)
-    for ( i in 0:7 ) {
-        legend_elev <- paste(i*500,"", sep="")
-        text(83000,2400000+15000*(i+1), label=legend_elev, adj=0)
+    for ( i in 0:9 ) {
+        if ( i <= 2 ) {
+            legend_elev <- paste(i*250,"", sep="")
+        } else if ( i > 2 & i < 9 ) { 
+            legend_elev <- paste((i-1)*500,"", sep="")
+        } else if ( i == 9 ) {
+            legend_elev <- 3952
+        } else print("Exception caught!")
+        text(68000,2355000+15000*(i+1), label=legend_elev, adj=0)
     }
     par(xpd=T)
-    text(70000,2540000,label="Elevation (m)", pos=4)
-    par(xpd=NA)
+    text(55000,2520000,label="Elevation (m)", pos=4)
+    par(xpd=F)
    
     # plot species data
-    plot.xy(xy.coords(species.data), lwd=3, pch=sp.pch, type="p", col=sp.col)
+    #plot.xy(xy.coords(species.data), lwd=3, pch=sp.pch, type="p", col=sp.col)
 }
 
 twcoor.trans <- function(coords, src, dst){
@@ -155,7 +188,7 @@ twcoor.trans <- function(coords, src, dst){
      else print("Exception caught! Please report a bug! Thank you")
 }
 
-draw.vertmap <- function(coorsys, orient=1, mountain=T) {
+draw.vertmap <- function(coorsys, orient=1, mountain=T, lwd) {
     data(elevprof)
     # transformation of wgs84 and twd97
     proflong <- rep(20000, dim(elevprof)[1])
@@ -168,12 +201,12 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
         # coordinate system selection
         if ( coorsys == 84 ) {
             elev <- cbind(elevprof84[, 1], elevprof84[, 2])
-            o.xlim <- c(25.7,21.5)
+            o.xlim <- c(25.6, 21.5)
             o.ylim <- c(0, 4000)
             o.xlab <- "Latitude"
             latdeg <- parse(text=paste(25:22,"*degree~", "N", sep=""))
             gridv <- 25:22
-            gridv.sub <- 215:257/10 
+            gridv.sub <- 215:256/10 
             datun.x <- 25.2
             datun.y <- 1200
             hsueh.x <- 24.35
@@ -184,12 +217,12 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
             beidawu.y <- 3200
         } else if ( coorsys == 97 ) {
             elev <- cbind(elevprof[, 1], elevprof[, 2])
-            o.xlim <- c(2850000,2380000)
+            o.xlim <- c(2832000,2378000)
             o.ylim <- c(0, 4200)
             o.xlab <- "TWD97 TM2 Y (meter)"
             latdeg <- c(28:24*100000)
             gridv <- 28:24*100000
-            gridv.sub <- 235:287*10000 
+            gridv.sub <- 237:283*10000 
             datun.x <- 2790000
             datun.y <- 1200
             hsueh.x <- 2700000
@@ -200,18 +233,18 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
             beidawu.y <- 3200
         } else print("Unsupported coordinate system!")
 
-    plot(elev, pch=".", ylim=o.ylim, xlim=o.xlim, axes=F,
+    plot(elev, pch=".", col="#FFFFFF00", ylim=o.ylim, xlim=o.xlim, axes=F,
                         ylab=o.ylab, xlab=o.xlab)
-    lines(elev)
-    abline(h=c(0:4)*(1000), b=0, lwd=1.2, col="grey")
-    abline(h=c(0:42)*(100), b=0, lwd=0.5, col="grey")
-    abline(v=gridv,lwd=1.2,col="grey")
-    abline(v=gridv.sub,lwd=0.5,col="grey")
+    # abline(h=c(0:4)*(1000), b=0, lwd=1.2*lwd, col="grey")
+    # abline(h=c(0:42)*(100), b=0, lwd=0.5*lwd, col="grey")
+    # abline(v=gridv,lwd=1.2*lwd,col="grey")
+    # abline(v=gridv.sub,lwd=0.5*lwd,col="grey")
+    lines(elev, lwd=lwd)
     # draw axis
     axis(side=o.side1, gridv, latdeg, las=1)
     axis(side=o.side2, 1000*(0:4), cbind("0","1000","2000","3000","4000"))
     # draw frame
-    box()
+    box(lwd=lwd)
     if ( mountain == T ) {
         text(datun.x,datun.y, labels='Datun Shan')
         text(hsueh.x,hsueh.y, labels='Hsueh Shan')
@@ -227,11 +260,11 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
         if ( coorsys == 84 ) {
             elev <- cbind(elevprof84[, 2], elevprof84[, 1])
             o.xlim <- c(4200,0)
-            o.ylim <- c(21.5, 25.7)
+            o.ylim <- c(21.5, 25.6)
             o.ylab <- "Latitude"
             latdeg <- parse(text=paste(22:25,"*degree~", "N", sep=""))
             gridv <- 22:25
-            gridv.sub <- 215:257/10 
+            gridv.sub <- 215:256/10 
             datun.y <- 25.2
             datun.x <- 1200
             hsueh.y <- 24.35
@@ -243,11 +276,11 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
         } else if ( coorsys == 97 ) {
             elev <- cbind(elevprof[, 2], elevprof[, 1])
             o.xlim <- c(4200,0)
-            o.ylim <- c(2380000,2850000)
+            o.ylim <- c(2378000,2832000)
             o.ylab <- "TWD97 TM2 Y (meter)"
             latdeg <- c(24:28*100000)
             gridv <- 24:28*100000
-            gridv.sub <- 235:287*10000
+            gridv.sub <- 238:283*10000
             datun.y <- 2790000
             datun.x <- 1200
             hsueh.y <- 2700000
@@ -258,18 +291,19 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
             beidawu.x <- 3200
         } else print("Unsupported coordinate system!")
 
-    plot(elev, pch=".", ylim=o.ylim, xlim=o.xlim, axes=F,
+    plot(elev, pch=".", col="#FFFFFF00", ylim=o.ylim, xlim=o.xlim, axes=F,
                         ylab=o.ylab, xlab=o.xlab)
-    lines(elev)
-    abline(v=c(0:4)*(1000), lwd=1.2, col="grey")
-    abline(v=c(0:42)*(100), lwd=0.5, col="grey")
-    abline(h=gridv,b=0,lwd=1.2,col="grey")
-    abline(h=gridv.sub,b=0,lwd=0.5,col="grey")
+    # abline(v=c(0:4)*(1000), lwd=1.2*lwd, col="grey")
+    # abline(v=c(0:42)*(100), lwd=0.5*lwd, col="grey")
+    # abline(h=gridv,b=0,lwd=1.2*lwd,col="grey")
+    # abline(h=gridv.sub,b=0,lwd=0.5*lwd,col="grey")
+    lines(elev, lwd=lwd)
     # draw axis
     axis(side=o.side1, gridv, latdeg, las=3)
     axis(side=o.side2, 1000*(0:4), cbind("0","1000","2000","3000","4000"))
+    axis(side=o.side2+2, 1000*(0:4), cbind("0","1000","2000","3000","4000"))
     # draw frame
-    box()
+    box(lwd=lwd)
     if ( mountain == T ) {
         text(datun.x,datun.y, labels='Datun Shan', srt=90)
         text(hsueh.x,hsueh.y, labels='Hsueh Shan', srt=90)
@@ -284,11 +318,11 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
         if ( coorsys == 84 ) {
             elev <- cbind(elevprof84[, 2], elevprof84[, 1])
             o.xlim <- c(0,4200)
-            o.ylim <- c(21.5, 25.7)
+            o.ylim <- c(21.5, 25.6)
             o.ylab <- "Latitude"
             latdeg <- parse(text=paste(22:25,"*degree~", "N", sep=""))
             gridv <- 22:25
-            gridv.sub <- 215:257/10 
+            gridv.sub <- 215:256/10 
             datun.y <- 25.2
             datun.x <- 1200
             hsueh.y <- 24.35
@@ -300,11 +334,11 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
         } else if ( coorsys == 97 ) {
             elev <- cbind(elevprof[, 2], elevprof[, 1])
             o.xlim <- c(0,4200)
-            o.ylim <- c(2380000,2850000)
+            o.ylim <- c(2382000,2837000)
             o.ylab <- "TWD97 TM2 Y (meter)"
             latdeg <- c(24:28*100000)
             gridv <- 24:28*100000
-            gridv.sub <- 235:287*10000
+            gridv.sub <- 238:283*10000
             datun.y <- 2790000
             datun.x <- 1200
             hsueh.y <- 2700000
@@ -315,20 +349,21 @@ draw.vertmap <- function(coorsys, orient=1, mountain=T) {
             beidawu.x <- 3200
         } else print("Unsupported coordinate system!")
 
-    par(oma=c(0,0,0,4))
-    plot(elev, pch=".", ylim=o.ylim, xlim=o.xlim, axes=F,
+    #par(oma=c(0,0,0,4))
+    plot(elev, pch=".", col="#FFFFFF00", ylim=o.ylim, xlim=o.xlim, axes=F,
                         ylab="", xlab=o.xlab)
-    mtext(o.ylab, side=4, las=3, outer=T)
-    lines(elev)
-    abline(v=c(0:4)*(1000), lwd=1.2, col="grey")
-    abline(v=c(0:42)*(100), lwd=0.5, col="grey")
-    abline(h=gridv,b=0,lwd=1.2,col="grey")
-    abline(h=gridv.sub,b=0,lwd=0.5,col="grey")
+    #mtext(o.ylab, side=4, las=3, outer=T)
+    #abline(v=c(0:4)*(1000), lwd=1.2*lwd, col="grey")
+    #abline(v=c(0:42)*(100), lwd=0.5*lwd, col="grey")
+    #abline(h=gridv,b=0,lwd=1.2*lwd,col="grey")
+    #abline(h=gridv.sub,b=0,lwd=0.5*lwd,col="grey")
+    lines(elev,lwd=lwd)
     # draw axis
     axis(side=o.side1, gridv, latdeg, las=3)
     axis(side=o.side2, 1000*(0:4), cbind("0","1000","2000","3000","4000"))
+    axis(side=o.side2+2, 1000*(0:4), cbind("0","1000","2000","3000","4000"))
     # draw frame
-    box()
+    box(lwd=lwd)
     if ( mountain == T ) {
         text(datun.x,datun.y, labels='Datun Shan', srt=90)
         text(hsueh.x,hsueh.y, labels='Hsueh Shan', srt=90)

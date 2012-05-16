@@ -1,3 +1,7 @@
+2011-12-02 20:39 psilotum
+
+	* add NAMESPACE to meet the requirement of R 2.14.0
+
 2011-05-31 14:40 psilotum
 
     * Add draw vertical map portrait left/right

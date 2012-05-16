@@ -1,8 +1,8 @@
 Package: twmap
 Type: Package
 Title: Draw species plots and elevation in Taiwan 
-Version: 1.2-2
-Date: 2011-05-25
+Version: 1.2-3
+Date: 2011-12-2
 Author: Lin, Cheng-Tao
 Maintainer: Lin, Cheng-Tao <mutolisp@gmail.com>
 Depends: R (>= 2.10), maptools (>= 0.7), rgdal (>= 0.6), proj4 (>= 1.0)
