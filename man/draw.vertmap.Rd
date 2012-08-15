@@ -23,6 +23,9 @@ Map orientation. 1: landscape view (x-axis: latitude; y-axis: elevation);
 Mark the main mountains (Datun Shan; Hsueh Shan; Yu Shan and BeiDawu Shan) along 
 the latitudinal gradient. Default is true.
 }
+  \item{lwd} {
+export line weights
+}
 }
 \details{
 }
@@ -51,12 +54,12 @@ twcoor.trans
 library(twmap)
 data(vertplots)
 # draw vertical map in landscape mode
-draw.vertmap(97, 1, T)
+draw.vertmap(97, 1, T, lwd=1)
 # plot sample releves
 plot.xy(xy.coords(vertplots), type="p", col="red")
 
 # draw vertical map in portrait mode, y-axis on the right side
-draw.vertmap(84, 3, F)
+draw.vertmap(84, 3, F, lwd=1)
 plot.xy(xy.coords(vertplots), type="p", col="red")
 }
 \keyword{ gis }

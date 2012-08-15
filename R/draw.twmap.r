@@ -23,8 +23,6 @@ draw.twmap <- function(theme,lwd, river=T) {
                 "#646464FF", "#7D7D7DFF", "#969696FF", "#AFAFAFFF", "#C8C8C8FF", "#FFFFFFFF")
     } else print("Please choose template number: 1 (color) or 2 (gray scale)")
     library(maptools)
-    #library(rgdal)
-    #library(lattice)
 
     gridlwd <- lwd
     # load r binary data (processed with readShapePoly(), readShapeLines()

@@ -1,4 +1,4 @@
-draw.vertmap <- function(coorsys, orient=1, mountain=T, lwd) {
+draw.vertmap <- function(coorsys, orient=1, mountain=T, lwd=1) {
     data(elevprof)
     # transformation of wgs84 and twd97
     proflong <- rep(20000, dim(elevprof)[1])
