@@ -23,7 +23,7 @@ Map orientation. 1: landscape view (x-axis: latitude; y-axis: elevation);
 Mark the main mountains (Datun Shan; Hsueh Shan; Yu Shan and BeiDawu Shan) along 
 the latitudinal gradient. Default is true.
 }
-  \item{lwd} {
+  \item{lwd}{
 export line weights
 }
 }

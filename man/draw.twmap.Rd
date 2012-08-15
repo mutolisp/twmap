@@ -1,5 +1,5 @@
-\name{drawtwmap}
-\alias{drawtwmap}
+\name{draw.twmap}
+\alias{draw.twmap}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Draw Taiwan map with latitudinal gradients
