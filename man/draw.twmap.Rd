@@ -65,11 +65,16 @@ maptools, sp
 \examples{
 # Draw a standard species plot with elevation and water,
 library(twmap)
+# export to png file
+# NOT RUN
 data(twsp)
-drawtwmap(sp, lwd=4, sp.pch=16, sp.col="red", png=T, file.name='sp_name.png')
+png("/path/to/export/file.png", width=2000, height=2800, pointsize=46)
+draw.twmap(theme=1, lwd=3, river=T)
+plot.xy(xy.coords(twsp), type="p", pch=19, col="red")
+dev.off()
 }
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ ~map }
+\keyword{ ~spatial }% __ONLY ONE__ keyword per line

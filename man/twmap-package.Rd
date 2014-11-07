@@ -42,7 +42,7 @@ Maintainer: Lin, Cheng-Tao <mutolisp@gmail.com>
 # then export to 'sp_name.png'
 library(twmap)
 data(twsp)
-drawtwmap(sp, lwd=4, sp.pch=16, sp.col="red", png=T, file.name='sp_name.png')
+draw.twmap(lwd=3, river=T)
 
 coor <- matrix(c(121,122,120.5,22,22.5,23.5),3,2)
 # transform WGS84 to TWD97 TM2

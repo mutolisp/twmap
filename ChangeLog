@@ -1,3 +1,7 @@
+2012-08-17 13:44 psilotum
+
+	* upgrade to R 2.15.1, fix several bugs
+
 2011-12-02 20:39 psilotum
 
 	* add NAMESPACE to meet the requirement of R 2.14.0
