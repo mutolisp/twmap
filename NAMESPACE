@@ -1,1 +1,1 @@
-export(draw.twmap, twcoor.trans, draw.vertmap)
+export(draw.twmap, twcoor.trans, draw.vertmap, distrmap, lat_elev_profile)
