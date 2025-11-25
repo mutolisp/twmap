@@ -15,8 +15,8 @@
 *.tar.gz
 /build/
 
-.tif
-.tiff
+*.tif
+*.tiff
 .Rbuildignore.local
 
 man/
