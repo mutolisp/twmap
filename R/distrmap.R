@@ -1,22 +1,20 @@
-library(rgdal)
-require(raster)
-require(maptools)
-
 distrmap = function (pts, boundary, col, vert_prof, cex=0.3, pch=19) {
   vert_bound = 122.2; ly = 21.8; uy = 25.4; vmar = 0.1
+  
   basemap = function (boundary, vert_prof) {
-   
-    proj_wgs84 = "+proj=longlat +datum=WGS84 +no_defs"
-    tw_boundary = maptools::readShapeSpatial(boundary,proj4string = CRS(proj_wgs84))
-    #layout(matrix(c(1,2,1,2), 2, 2, byrow = TRUE), widths=c(1,0.8))
+    
+    tw_sf <- sf::st_read(boundary)
+    
+    tw_boundary <- as(tw_sf, "Spatial")
+    
     plot(tw_boundary, col="white",border="#aaaaaa", 
          xlim=c(119.8, 123), ylim=c(21.5, 25.5), axes=FALSE)
     # draw tropical of cancer
     abline(h=23.5, lty=2, col='grey')
     axis_latlab = parse(text=paste(22:25, "*degree~", "N", sep=""))
-    axis(side=2, lwd=0.8, labels = axis_latlab ,  lwd.ticks = 0.5, 
+    axis(side=2, lwd=0.8, labels = axis_latlab , lwd.ticks = 0.5, 
          at=22:25, cex=0.8)
-    #axis(side=4, lwd=0.8, labels = lat ,  lwd.ticks = 0.5,
+    #axis(side=4, lwd=0.8, labels = lat , lwd.ticks = 0.5,
     #     at=22:25, cex=0.8)
     axis_longlab = parse(text=paste(120:122, "*degree~", "E", sep=""))
     axis(side=1, labels = axis_longlab, at=120:122, line = NA, lwd = 0.8, cex=0.8)
@@ -43,10 +41,12 @@ distrmap = function (pts, boundary, col, vert_prof, cex=0.3, pch=19) {
     # draw latitude-elevation profile
     vert_prof$z = vert_bound + (vert_prof$z/4000)
     vf = cbind(vert_prof$z, vert_prof$y)
-    plot.xy(xy.coords(vf),  type='p', col='white', pch=19, cex=0.5)
-    lines(vf, col='darkgrey')   
+    plot.xy(xy.coords(vf), type='p', col='white', pch=19, cex=0.5)
+    lines(vf, col='darkgrey')    
     box()
   }
+  
+  # draw_sp_pts 
   draw_sp_pts = function(pts, col, cex=0.3, pch=19) {
     if ( dim(pts)[2] != 3 ) {
       print('The input points should have x (longitude), y (latitude) and z (elevation)')
