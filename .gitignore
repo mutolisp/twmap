@@ -15,6 +15,7 @@
 *.tar.gz
 /build/
 
+data/TWN30MDTM.tif
 *.tif
 *.tiff
 .Rbuildignore.local
