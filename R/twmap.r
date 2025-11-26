@@ -105,7 +105,6 @@ draw.twmap <- function(theme,lwd, river=T){
   #plot.xy(xy.coords(species.data), lwd=3, pch=sp.pch, type="p", col=sp.col)
 }
 
-# === 這是修復後的 twcoor.trans 函式 (已替換 ptransform 為 sf) ===
 twcoor.trans <- function(coords, src, dst){
   
   # projection definition (from Proj.4, coordinate systems see http://spatialreference.org)
@@ -135,7 +134,6 @@ twcoor.trans <- function(coords, src, dst){
       return(coords)
     } else print("Unsupported coordinate system!")
     
-    # === 替換 ptransform 為 sf::st_transform ===
     pts <- sf::st_multipoint(coords)
     pts <- sf::st_sfc(pts, crs = src.proj)
     trans_pts <- sf::st_transform(pts, crs = dst.proj)
@@ -146,7 +144,7 @@ twcoor.trans <- function(coords, src, dst){
     src.proj <- TWD97TM2
     if ( dst == 84 ) {
       dst.proj <- WGS84
-      # === 替換 ptransform 為 sf::st_transform ===
+      
       pts <- sf::st_multipoint(coords)
       pts <- sf::st_sfc(pts, crs = src.proj)
       trans_pts <- sf::st_transform(pts, crs = dst.proj)
@@ -154,7 +152,6 @@ twcoor.trans <- function(coords, src, dst){
       return(sf::st_coordinates(trans_pts))
       
     } else if ( dst == 67 ){
-      # TWD97 -> TWD67 參數轉換
       Y67 <- coords[, 2] + SN - A * coords[, 2] - B * coords[, 1]
       X67 <- coords[, 1] - EW - A * coords[, 1] - B * coords[, 2]
       return(cbind(X67, Y67))
@@ -166,7 +163,6 @@ twcoor.trans <- function(coords, src, dst){
     src.proj <- TWD67TM2
     if ( dst == 84 ) {
       dst.proj <- WGS84
-      # === 替換 ptransform 為 sf::st_transform ===
       pts <- sf::st_multipoint(coords)
       pts <- sf::st_sfc(pts, crs = src.proj)
       trans_pts <- sf::st_transform(pts, crs = dst.proj)
@@ -174,7 +170,6 @@ twcoor.trans <- function(coords, src, dst){
       return(sf::st_coordinates(trans_pts))
       
     } else if ( dst == 97 ){
-      # TWD67 -> TWD97 參數轉換
       X97 <- coords[, 1] + EW + A * coords[, 1] + B * coords[, 2]
       Y97 <- coords[, 2] - SN + A * coords[, 2] + B * coords[, 1]
       return(cbind(X97, Y97))
@@ -186,7 +181,7 @@ twcoor.trans <- function(coords, src, dst){
   return(NULL)
 }
 
-# draw.vertmap 函式保持不變，因為它依賴於我們修復後的 twcoor.trans
+
 draw.vertmap <- function(coorsys, orient=1, mountain=T, lwd) {
   data(elevprof)
   # transformation of wgs84 and twd97
