@@ -70,3 +70,35 @@
 #'
 #' A data frame containing coordinates for vertical plots.
 "vertplots"
+
+#' Species Distribution Sample Points for Taiwan (WGS84)
+#'
+#' A sample data frame containing fictitious species distribution records 
+#' intended for testing the \code{distrmap.tw} function. This data is provided 
+#' for demonstration and testing purposes.
+#'
+#' @format A data frame with 30 rows and 3 variables:
+#' \describe{
+#'   \item{x}{WGS84 Longitude (decimal degrees).}
+#'   \item{y}{WGS84 Latitude (decimal degrees).}
+#'   \item{z}{Elevation in meters.}
+#' }
+#' @source Simulated data.
+#' @usage data(sample_spts.tw)
+"sample_spts.tw"
+
+#' Species Distribution Sample Points for Lanyu (WGS84)
+#'
+#' A sample data frame containing *Maesa lanyuensis* Yuen P.Yang distribution records 
+#' intended for testing the \code{distrmap} function. This data is provided 
+#' for demonstration and testing purposes.
+#'
+#' @format A data frame with 31 rows and 3 variables:
+#' \describe{
+#'   \item{x}{WGS84 Longitude (decimal degrees).}
+#'   \item{y}{WGS84 Latitude (decimal degrees).}
+#'   \item{z}{Elevation in meters.}
+#' }
+#' @source Taiwan Biodiversity Network (10 September 2020) TBN Occurrence Download.
+#' @usage data(sample_spts.ly)
+"sample_spts.ly"
