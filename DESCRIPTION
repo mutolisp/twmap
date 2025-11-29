@@ -3,21 +3,19 @@ Type: Package
 Encoding: UTF-8
 Title: Draw species plots and elevation in Taiwan 
 Version: 1.2-6
-Date: 2015-04-04
-Author: Lin, Cheng-Tao
+Date: 2025-11-29
+Author@R: person("Lin", "Cheng-Tao", email = "mutolisp@gmail.com", role = c("aut", "cre"))
 Maintainer: Lin, Cheng-Tao <mutolisp@gmail.com>
 Depends: 
-    R (>= 3.5)
+    R (>= 4.5.0)
 Imports: 
-    sf,
-    terra,
+    sf (>= 1.0-0),
+    terra (>= 1.7-0),
     methods,
     grDevices,
     graphics,
-    utils
+    utils,
 Description: It's lazy-man-drawing Taiwan map and species data program with classified elevation and rivers. 
 License: FreeBSD
-LazyLoad: yes
-Packaged: 2011-05-25 05:38:10 UTC; psilotum
 LazyData: true
 RoxygenNote: 7.3.3

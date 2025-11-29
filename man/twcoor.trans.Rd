@@ -7,9 +7,14 @@
 twcoor.trans(coords, src, dst)
 }
 \arguments{
-\item{coords}{A two-column matrix or data frame of coordinates (X, Y).}
+\item{coords}{A two-column matrix or data frame of coordinates, where the first column is X (Easting/Longitude) and the second column is Y (Northing/Latitude).}
 
-\item{src}{An integer (84, 97, or 67) indicating the source coordinate system.}
+\item{src}{An integer (84, 97, or 67) indicating the source coordinate system.
+\itemize{
+  \item \strong{84:} WGS84 (Longitude-Latitude).
+  \item \strong{97:} TWD97 / EPSG:3826 (TM2, meters).
+  \item \strong{67:} TWD67 (TM2, meters).
+}}
 
 \item{dst}{An integer (84, 97, or 67) indicating the destination coordinate system.}
 }
@@ -17,6 +22,31 @@ twcoor.trans(coords, src, dst)
 A matrix of transformed coordinates (X, Y).
 }
 \description{
-This function performs coordinate system transformation between WGS84 (84),
-TWD97 (97), and TWD67 (67) based on EPSG codes and custom transformation formulas.
+This function performs coordinate system transformations between WGS84 (84),
+TWD97 (97, using TM2 projection), and TWD67 (67, using TM2 projection).
+}
+\details{
+It utilizes custom empirical formulas for TWD67 <-> TWD97 conversion, and the
+\code{sf} package for transformations involving WGS84 (geographic coordinates).
+}
+\examples{
+\dontrun{
+# Load example coordinate data (WGS84 Lon/Lat)
+data(twsp)
+head(twsp)
+
+# Example 1: WGS84 (84) to TWD97 TM2 (97)
+twd97_coords <- twcoor.trans(twsp, src = 84, dst = 97)
+head(twd97_coords)
+
+# Example 2: TWD97 TM2 (97) back to WGS84 (84)
+wgs84_coords <- twcoor.trans(twd97_coords, src = 97, dst = 84)
+head(wgs84_coords)
+
+# Example 3: TWD97 TM2 (97) to TWD67 TM2 (67) using empirical formula
+# Note: Must use a TWD97 TM2 matrix for 'coords' input for this conversion.
+twd67_coords <- twcoor.trans(twd97_coords, src = 97, dst = 67)
+head(twd67_coords)
+}
+
 }

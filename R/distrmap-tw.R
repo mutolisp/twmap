@@ -9,11 +9,11 @@
 #'   at least three columns: \code{x}, \code{y} (WGS84 or TWD97 horizontal coordinates),
 #'   and \code{z} (elevation in meters).
 #' @param theme Integer. The map style to draw. \code{1} for colored terrain
-#'   (\code{draw.twmap}), \code{3} for black/white border only.
-#' @param vert_orient Integer. The orientation for the vertical profile.
-#'   \code{1} for longitudinal profile (latitude vs. elevation, default),
-#'   \code{2} for lateral profile. Passed to \code{draw.vertmap}.
-#' @param ... Additional graphical parameters passed to \code{graphics::points()}.
+#'   (using \code{draw.twmap}), \code{3} for black/white border only, etc.
+#' @param cex Numeric. Magnification factor for plotting symbols. Default is 0.4.
+#' @param pch Numeric. Plotting character used for points. Default is 19 (solid circle).
+#' @param col Character or vector of characters. Color(s) used for plotting the species points. Default is "black".
+#' @param ... Additional graphical parameters passed to \code{graphics::points()} for the map points.
 #'
 #' @export
 #'
@@ -22,74 +22,76 @@
 #'
 #' @examples
 #' \dontrun{
-#' # 1. 準備模擬的物種分佈數據 (WGS84)
-#' set.seed(123)
-#' mock_pts <- data.frame(
-#'   x = runif(50, 120.5, 121.8), # Longitude
-#'   y = runif(50, 22.5, 25.0),   # Latitude
-#'   z = sample(seq(10, 3500, by=10), 50) # Elevation
-#' )
+#' # Assuming functions like draw.twmap and draw.vertmap exist in the package.
 #' 
-#' # 範例 1: 彩色地形圖 (theme=1) + 縱向剖面 (vert_orient=1)
-#' distrmap.tw(mock_pts, theme = 1, pch = 16, col = "red")
+#' # 1. Load the example species distribution data for Taiwan
+#' utils::data("sample_spts.tw") 
 #' 
-#' # 範例 2: 黑白邊界圖 (theme=3) + 橫向剖面 (vert_orient=2)
-#' distrmap.tw(mock_pts, theme = 3, vert_orient = 2, pch = 1)
+#' # Example 1: Colored terrain map (theme=1)
+#' # Note: The vertical profile uses default longitudinal orientation (latitude vs. elevation)
+#' distrmap.tw(sample_spts.tw, theme = 1, pch = 16, col = "red")
+#' 
+#' # Example 2: Black/white border map (theme=4)
+#' distrmap.tw(sample_spts.tw, theme = 4, pch = 1, col = "blue")
 #' }
 distrmap.tw <- function(pts, theme = 1, cex = 0.4, pch = 19, col = "black", ...) {
   
-  # --- I. 參數檢查與數據準備 ---
+  # --- I. Parameter Check and Data Preparation ---
   if (!all(c("x", "y", "z") %in% names(pts))) {
     stop("Input 'pts' must be a data frame containing 'x', 'y', and 'z' columns.")
   }
   
-  # --- II. 設置圖形佈局 (1 行 2 列) ---
+  # --- II. Set Graphics Layout (1 Row, 2 Columns) ---
   old.par <- graphics::par(no.readonly = TRUE)
+  # Ensure graphical parameters are reset upon exit
   on.exit(graphics::par(old.par))
   
+  # Layout the plots: Map (3 units wide), Profile (1 unit wide)
   graphics::layout(matrix(c(1, 2), 1, 2, byrow = TRUE), widths = c(3, 1))
-  graphics::par(mar = c(5, 4, 4, 0)) # 地圖 (左邊) 邊距
+  # Map (Left plot) margins: bottom, left, top, right (right margin is 0)
+  graphics::par(mar = c(5, 4, 4, 0)) 
   
-  # --- III. 繪製地圖 ---
+  # --- III. Draw Map ---
   
   if (theme %in% 1:4) {
-    # 1. 繪製彩色地形圖 (使用 draw.twmap)
+    # 1. Draw the map (using draw.twmap function, assumed external)
     draw.twmap(theme = theme, lwd = 1, draw_river = FALSE, draw_grid_lines = FALSE)
     
   } else {
-    stop("Invalid 'theme' parameter. Use 1 (color), 2 (gray), 3 (dark), or 4 (border).")
+    stop("Invalid 'theme' parameter. Use 1 (color), 2 (lightcor), 3 (DTM), or 4 (border).")
   }
   
-  # 在地圖上繪製物種點 (水平分佈)
+  # Plot species points on the map (Horizontal Distribution)
   graphics::points(pts$x, 
                    pts$y,
-                   pch = pch,  # <--- 使用新的 pch 參數
-                   cex = cex,  # <--- 使用新的 cex 參數
-                   col = col)
+                   pch = pch,
+                   cex = cex,
+                   col = col,
+                   ...) # Pass additional graphical parameters
   
-  # --- IV. 繪製垂直剖面圖 ---
+  # --- IV. Draw Vertical Profile Plot ---
   
-  graphics::par(mar = c(5, 0, 4, 2)) # 垂直剖面圖 (右邊) 邊距
+  # Vertical Profile (Right plot) margins: bottom, left, top, right (left margin is 0)
+  graphics::par(mar = c(5, 0, 4, 2)) 
   
-  # 1. 繪製垂直剖面圖的背景線條 (使用 draw.vertmap)
-  # 由於 draw.vertmap 內部使用 elevprof，我們需要先載入
+  # 1. Draw the vertical profile background (using draw.vertmap function, assumed external)
+  # Load elevation profile data first (assumed necessary for draw.vertmap)
   utils::data("elevprof", package = "twmap")
   
-  # 繪製垂直剖面背景
-  # 我們需要確保 draw.vertmap 使用正確的座標系統，這裡假設 pts$y 是 WGS84 緯度
+  # Draw vertical profile background
+  # We assume pts$y are WGS84 latitude coordinates.
   draw.vertmap(
-    coorsys = 84, # 假設 pts$y 是 WGS84 緯度
-    orient = 3,
-    mountain = F, # 繪製山形背景
+    coorsys = 84, # Assumes pts$y is WGS84 latitude
+    orient = 3, # Orientation/profile type (fixed by existing code)
+    mountain = FALSE, # Do not draw mountain profile background
     lwd = 1.5 
   )
   
-  # 2. 在垂直剖面上繪製物種點 (垂直分佈)
-  # 注意：y軸是緯度/距離，z軸是海拔。
-  # 由於 draw.vertmap 的輸出空間是以緯度/距離為 X 軸，海拔為 Y 軸，
-  # 我們可以直接繪製 pts$y 對 pts$z。
-  graphics::points(pts$z, 
-                   pts$y,
+  # 2. Plot species points on the vertical profile (Vertical Distribution)
+  # Note: draw.vertmap's plot space uses elevation (z) as the X-axis 
+  # and latitude/distance (y) as the Y-axis.
+  graphics::points(pts$z, # X-axis: Elevation (m)
+                   pts$y, # Y-axis: Latitude/Distance
                    pch = pch,
                    cex = cex,
                    col = col)

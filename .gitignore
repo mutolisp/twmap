@@ -1,9 +1,8 @@
 .Rhistory
-#.RData
+.RData
 .Rprofile
-
-
 .Rproj.user/
+.Rproj
 .Ruserdata
 .DS_Store
 
@@ -15,10 +14,11 @@
 *.tar.gz
 /build/
 
-data/TWN30MDTM.tif
-*.tif
-*.tiff
-.Rbuildignore.local
 
-man/
-NAMESPACE
+*_files/
+/vignettes/*.html
+/vignettes/*.pdf
+/inst/doc/
+
+inst/extdata/TWN30MDTM.tif
+.Rbuildignore.local

@@ -2,12 +2,12 @@
 % Please edit documentation in R/draw.vertmap.r
 \name{draw.vertmap}
 \alias{draw.vertmap}
-\title{Draw vertical maps}
+\title{Draw Vertical Elevation Profile Map of Taiwan}
 \usage{
 draw.vertmap(coorsys, orient = 1, mountain = T, lwd = 1)
 }
 \arguments{
-\item{coorsys}{An integer specifying the coordinate system for the axis: 84 for WGS84 Latitude (degrees), or 97 for TWD97 TM2 Y (meters).}
+\item{coorsys}{An integer specifying the coordinate system for the primary axis: 84 for WGS84 Latitude (degrees), or 97 for TWD97 TM2 Y (meters).}
 
 \item{orient}{An integer (1, 2, or 3) specifying the plot orientation:
 \itemize{
@@ -25,4 +25,18 @@ The function is primarily used for its side effect (plotting the map) and return
 }
 \description{
 Draws the latitude-elevation profile of Taiwan's main island based on the `elevprof` data.
+This profile shows the relationship between elevation and latitude/TWD97 Y coordinate.
+}
+\examples{
+\dontrun{
+# Example 1: Landscape mode using TWD97 coordinates, with mountain labels
+draw.vertmap(coorsys = 97, orient = 1, mountain = TRUE)
+
+# Example 2: Landscape mode using WGS84 coordinates, with mountain labels
+draw.vertmap(coorsys = 84, orient = 1, mountain = TRUE)
+
+# Example 3: Portrait mode (for combined plots)
+draw.vertmap(coorsys = 84, orient = 3, mountain = FALSE, lwd = 0.5)
+}
+
 }

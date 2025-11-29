@@ -1,4 +1,4 @@
-# R/data-documentation.R (或任何 R 檔案)
+# R/data-documentation.R
 
 #' Taiwan Elevation Data (c0-c8)
 #'

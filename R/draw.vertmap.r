@@ -1,8 +1,9 @@
-#' Draw vertical maps
+#' Draw Vertical Elevation Profile Map of Taiwan
 #'
 #' Draws the latitude-elevation profile of Taiwan's main island based on the `elevprof` data.
+#' This profile shows the relationship between elevation and latitude/TWD97 Y coordinate.
 #'
-#' @param coorsys An integer specifying the coordinate system for the axis: 84 for WGS84 Latitude (degrees), or 97 for TWD97 TM2 Y (meters).
+#' @param coorsys An integer specifying the coordinate system for the primary axis: 84 for WGS84 Latitude (degrees), or 97 for TWD97 TM2 Y (meters).
 #' @param orient An integer (1, 2, or 3) specifying the plot orientation:
 #'   \itemize{
 #'     \item \strong{1:} Landscape mode (Latitude/TWD97 Y on X-axis, Elevation on Y-axis).
@@ -17,9 +18,21 @@
 #'
 #' @importFrom utils data
 #' @importFrom grDevices xy.coords
-#' @importFrom graphics abline axis box lines plot text
+#' @importFrom graphics abline axis box lines plot text par
 #'
 #' @name draw.vertmap
+#' @examples
+#' \dontrun{
+#' # Example 1: Landscape mode using TWD97 coordinates, with mountain labels
+#' draw.vertmap(coorsys = 97, orient = 1, mountain = TRUE)
+#'
+#' # Example 2: Landscape mode using WGS84 coordinates, with mountain labels
+#' draw.vertmap(coorsys = 84, orient = 1, mountain = TRUE)
+#'
+#' # Example 3: Portrait mode (for combined plots)
+#' draw.vertmap(coorsys = 84, orient = 3, mountain = FALSE, lwd = 0.5)
+#' }
+#' 
 draw.vertmap <- function(coorsys,
                          orient = 1,
                          mountain = T,
@@ -249,6 +262,7 @@ draw.vertmap <- function(coorsys,
       base::print("Unsupported coordinate system!")
     
     #par(oma=c(0,0,0,4))
+    par(mgp = c(1.5, 0.25, 0))
     graphics::plot(
       elev,
       pch = ".",
@@ -285,7 +299,7 @@ draw.vertmap <- function(coorsys,
     graphics::axis(side = o.side2,
                    1000 * (0:4),
                    cbind("0", "1000", "2000", "3000", "4000"),
-                   cex.axis = 0.75,
+                   cex.axis = 0.7,
                    las = 1)
     #graphics::axis(side = o.side2 + 2, # side 1 + 2 = side 3 (top)
     #               1000 * (0:4),
