@@ -49,7 +49,7 @@ distrmap.tw <- function(pts, theme = 1, cex = 0.4, pch = 19, col = "black", ...)
   # Layout the plots: Map (3 units wide), Profile (1 unit wide)
   graphics::layout(matrix(c(1, 2), 1, 2, byrow = TRUE), widths = c(3, 1))
   # Map (Left plot) margins: bottom, left, top, right (right margin is 0)
-  graphics::par(mar = c(5, 4, 4, 0)) 
+  graphics::par(mar = c(3, 1.5, 2, 0)) 
   
   # --- III. Draw Map ---
   
@@ -72,7 +72,7 @@ distrmap.tw <- function(pts, theme = 1, cex = 0.4, pch = 19, col = "black", ...)
   # --- IV. Draw Vertical Profile Plot ---
   
   # Vertical Profile (Right plot) margins: bottom, left, top, right (left margin is 0)
-  graphics::par(mar = c(5, 0, 4, 2)) 
+  graphics::par(mar = c(3, 0, 2, 0.5)) 
   
   # 1. Draw the vertical profile background (using draw.vertmap function, assumed external)
   # Load elevation profile data first (assumed necessary for draw.vertmap)

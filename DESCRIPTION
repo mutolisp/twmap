@@ -7,7 +7,7 @@ Date: 2025-11-29
 Author@R: person("Lin", "Cheng-Tao", email = "mutolisp@gmail.com", role = c("aut", "cre"))
 Maintainer: Lin, Cheng-Tao <mutolisp@gmail.com>
 Depends: 
-    R (>= 4.5.0)
+    R (>= 4.0.0)
 Imports: 
     sf (>= 1.0-0),
     terra (>= 1.7-0),

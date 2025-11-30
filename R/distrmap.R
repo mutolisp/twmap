@@ -154,7 +154,7 @@ distrmap <- function (pts,
       graphics::segments(x_pos, ly + y_pad_map / 2, x_pos, ly + y_pad_map / 2)
       ticlab <- base::paste0(current_elev)
       lat_unit <- base::abs(grid_lat[2] - grid_lat[1])
-      graphics::text(x_pos, ly, ticlab, cex = 0.7)
+      graphics::text(x_pos, ly, ticlab, cex = 0.65, font = 2)
     }
     
     label_x_pos <- vert_bound + (vert_prof_width / 2)

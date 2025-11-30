@@ -262,7 +262,7 @@ draw.vertmap <- function(coorsys,
       base::print("Unsupported coordinate system!")
     
     #par(oma=c(0,0,0,4))
-    par(mgp = c(1.5, 0.25, 0))
+    par(mgp = c(1.2, 0.25, 0))
     graphics::plot(
       elev,
       pch = ".",
@@ -299,8 +299,9 @@ draw.vertmap <- function(coorsys,
     graphics::axis(side = o.side2,
                    1000 * (0:4),
                    cbind("0", "1000", "2000", "3000", "4000"),
-                   cex.axis = 0.7,
-                   las = 1)
+                   cex.axis = 0.65,
+                   las = 1,
+                   font = 2)
     #graphics::axis(side = o.side2 + 2, # side 1 + 2 = side 3 (top)
     #               1000 * (0:4),
     #               cbind("0", "1000", "2000", "3000", "4000"))
@@ -315,6 +316,6 @@ draw.vertmap <- function(coorsys,
     }
     
   } else
-    base::print("orientation=1(Landscape)/2(Portrait left)/3(Portrait right)")
+    base::print("orientation = 1(Landscape) / 2(Portrait left) / 3(Portrait right)")
 }
 
