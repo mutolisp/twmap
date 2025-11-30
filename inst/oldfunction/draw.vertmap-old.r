@@ -1,9 +1,8 @@
-#' Draw Vertical Elevation Profile Map of Taiwan
+#' Draw vertical maps
 #'
 #' Draws the latitude-elevation profile of Taiwan's main island based on the `elevprof` data.
-#' This profile shows the relationship between elevation and latitude/TWD97 Y coordinate.
 #'
-#' @param coorsys An integer specifying the coordinate system for the primary axis: 84 for WGS84 Latitude (degrees), or 97 for TWD97 TM2 Y (meters).
+#' @param coorsys An integer specifying the coordinate system for the axis: 84 for WGS84 Latitude (degrees), or 97 for TWD97 TM2 Y (meters).
 #' @param orient An integer (1, 2, or 3) specifying the plot orientation:
 #'   \itemize{
 #'     \item \strong{1:} Landscape mode (Latitude/TWD97 Y on X-axis, Elevation on Y-axis).
@@ -18,21 +17,9 @@
 #'
 #' @importFrom utils data
 #' @importFrom grDevices xy.coords
-#' @importFrom graphics abline axis box lines plot text par
+#' @importFrom graphics abline axis box lines plot text
 #'
 #' @name draw.vertmap
-#' @examples
-#' \dontrun{
-#' # Example 1: Landscape mode using TWD97 coordinates, with mountain labels
-#' draw.vertmap(coorsys = 97, orient = 1, mountain = TRUE)
-#'
-#' # Example 2: Landscape mode using WGS84 coordinates, with mountain labels
-#' draw.vertmap(coorsys = 84, orient = 1, mountain = TRUE)
-#'
-#' # Example 3: Portrait mode (for combined plots)
-#' draw.vertmap(coorsys = 84, orient = 3, mountain = FALSE, lwd = 0.5)
-#' }
-#' 
 draw.vertmap <- function(coorsys,
                          orient = 1,
                          mountain = T,
@@ -56,7 +43,7 @@ draw.vertmap <- function(coorsys,
     # coordinate system selection
     if (coorsys == 84) {
       elev <- cbind(elevprof84[, 1], elevprof84[, 2])
-      o.xlim <- c(25.5, 21.5)
+      o.xlim <- c(25.6, 21.5)
       o.ylim <- c(0, 4000)
       o.xlab <- "Latitude"
       latdeg <- parse(text = paste(25:22, "*degree~", "N", sep = ""))
@@ -143,7 +130,7 @@ draw.vertmap <- function(coorsys,
     if (coorsys == 84) {
       elev <- cbind(elevprof84[, 2], elevprof84[, 1])
       o.xlim <- c(4200, 0)
-      o.ylim <- c(21.5, 25.5)
+      o.ylim <- c(21.5, 25.6)
       o.ylab <- "Latitude"
       latdeg <- parse(text = paste(22:25, "*degree~", "N", sep = ""))
       gridv <- 22:25
@@ -229,7 +216,7 @@ draw.vertmap <- function(coorsys,
     if (coorsys == 84) {
       elev <- cbind(elevprof84[, 2], elevprof84[, 1])
       o.xlim <- c(0, 4200)
-      o.ylim <- c(21.5, 25.5)
+      o.ylim <- c(21.5, 25.6)
       o.ylab <- "Latitude"
       latdeg <- parse(text = paste(22:25, "*degree~", "N", sep = ""))
       gridv <- 22:25
@@ -262,7 +249,6 @@ draw.vertmap <- function(coorsys,
       base::print("Unsupported coordinate system!")
     
     #par(oma=c(0,0,0,4))
-    par(mgp = c(1.2, 0.25, 0))
     graphics::plot(
       elev,
       pch = ".",
@@ -275,36 +261,33 @@ draw.vertmap <- function(coorsys,
     )
     #mtext(o.ylab, side=4, las=3, outer=T)
     graphics::abline(v = c(0:4) * (1000),
-                     lwd = 0.8 * lwd,
-                     col = "gray")
-    #graphics::abline(v = c(0:42) * (100),
-    #                 lwd = 0.5 * lwd,
-    #                 col = "grey")
-    #graphics::abline(
-    #  h = gridv,
-    #  b = 0,
-    #  lwd = 1.2 * lwd,
-    #  col = "grey"
-    #)
-    #graphics::abline(
-    #  h = gridv.sub,
-    #  b = 0,
-    #  lwd = 0.5 * lwd,
-    #  col = "grey"
-    #)
-    graphics::lines(elev, lwd = lwd, col = "#aaaaaa")
+                     lwd = 1.2 * lwd,
+                     col = "grey")
+    graphics::abline(v = c(0:42) * (100),
+                     lwd = 0.5 * lwd,
+                     col = "grey")
+    graphics::abline(
+      h = gridv,
+      b = 0,
+      lwd = 1.2 * lwd,
+      col = "grey"
+    )
+    graphics::abline(
+      h = gridv.sub,
+      b = 0,
+      lwd = 0.5 * lwd,
+      col = "grey"
+    )
+    graphics::lines(elev, lwd = lwd)
     
     # draw axis
-    # graphics::axis(side = o.side1, gridv, latdeg, las = 3)
+    graphics::axis(side = o.side1, gridv, latdeg, las = 3)
     graphics::axis(side = o.side2,
                    1000 * (0:4),
-                   cbind("0", "1000", "2000", "3000", "4000"),
-                   cex.axis = 0.65,
-                   las = 1,
-                   font = 2)
-    #graphics::axis(side = o.side2 + 2, # side 1 + 2 = side 3 (top)
-    #               1000 * (0:4),
-    #               cbind("0", "1000", "2000", "3000", "4000"))
+                   cbind("0", "1000", "2000", "3000", "4000"))
+    graphics::axis(side = o.side2 + 2, # side 1 + 2 = side 3 (top)
+                   1000 * (0:4),
+                   cbind("0", "1000", "2000", "3000", "4000"))
     
     # draw frame
     graphics::box(lwd = lwd)
@@ -316,6 +299,5 @@ draw.vertmap <- function(coorsys,
     }
     
   } else
-    base::print("orientation = 1(Landscape) / 2(Portrait left) / 3(Portrait right)")
+    base::print("orientation=1(Landscape)/2(Portrait left)/3(Portrait right)")
 }
-
